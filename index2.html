@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Programa 2 - Datos Curiosos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; max-width: 720px; margin: 40px auto; line-height: 1.5; }
+    button { padding: 10px 16px; border: 0; border-radius: 6px; cursor: pointer; }
+    #dato { margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Datos curiosos desde la nube</h1>
+
+  <button id="btn">Dame un dato</button>
+
+  <p id="dato"></p>
+
+  <script>
+    // Referencias a los elementos
+    var boton = document.getElementById("btn");
+    var parrafo = document.getElementById("dato");
+
+    // Al hacer clic, pedimos un dato a la API y lo mostramos
+    boton.onclick = function () {
+      // API pública: https://uselessfacts.jsph.pl
+      // IMPORTANTE: usar https y el parámetro language=en
+      fetch("https://uselessfacts.jsph.pl/random.json?language=en")
+        .then(function (respuesta) {
+          if (!respuesta.ok) {
+            // Si el servidor respondió con error (4xx/5xx)
+            throw new Error("Error HTTP: " + respuesta.status);
+          }
+          return respuesta.json();
+        })
+        .then(function (datos) {
+          // La propiedad que trae el texto es "text"
+          parrafo.innerText = datos.text;
+        })
+        .catch(function (err) {
+          // Manejo de errores de red o de la API
+          parrafo.innerText = "No se pudo obtener el dato. Intenta de nuevo.";
+          console.error(err);
+        });
+    };
+  </script>
+</body>
+</html>
