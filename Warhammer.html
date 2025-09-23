@@ -1,63 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Warhammer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=UnifrakturMaguntia&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- CSS integrado -->
   <style>
-    body {
-      background-color: #0d0d0d;
-      color: #e0e0e0;
-      font-family: 'Trebuchet MS', Verdana, sans-serif;
-      line-height: 1.6;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
+    :root{
+      --bg-carbon:#0b0b0b; --bg-iron:#141414; --bg-panel:#111;
+      --text:#e6e6e6; --muted:#bdbdbd; --gold:#d1a84a; --red:#b31313; --edge:#2a2a2a;
+      --shadow:0 10px 30px rgba(0,0,0,.6);
     }
-    h1 {
-      font-size: 3em;
-      text-align: center;
-      color: #ffcc00;
-      text-shadow: 2px 2px 5px #000;
-      border-bottom: 3px solid #ff0000;
-      padding-bottom: 10px;
-      margin-bottom: 20px;
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      background:
+        radial-gradient(1200px 600px at 20% 0%, #171717 0%, transparent 60%),
+        radial-gradient(1000px 500px at 100% 100%, #121212 0%, transparent 55%),
+        linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%);
+      background-color:var(--bg-carbon);
+      color:var(--text);
+      font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height:1.65;
+      margin:0;
     }
-    p {
-      font-size: 1.1em;
-      text-align: justify;
-      margin-bottom: 20px;
+    .page{
+      max-width: 980px; margin: clamp(24px, 4vw, 48px) auto;
+      padding: clamp(16px, 3vw, 32px);
+      background: linear-gradient(145deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
+                  linear-gradient(180deg, #0e0e0e, #0a0a0a);
+      border:1px solid var(--edge); border-radius:14px; box-shadow: var(--shadow);
+      position:relative; overflow:hidden;
     }
-    .highlight {
-      color: #ff4444;
-      font-weight: bold;
+    .page::before{
+      content:""; position:absolute; inset:0; pointer-events:none; border-radius:14px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), inset 0 0 60px rgba(209,168,74,.06);
     }
-    .box {
-      border: 2px solid #555;
-      padding: 15px;
-      border-radius: 8px;
-      background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-      box-shadow: 0 0 15px #000;
+    h1{
+      font-family: "UnifrakturMaguntia","Cinzel",serif;
+      font-size: clamp(40px, 6vw, 80px); letter-spacing:.5px; text-align:center;
+      margin: 6px 0 14px; color: #ffe08a;
+      text-shadow: 0 2px 0 #000, 0 6px 24px rgba(209,168,74,.35);
     }
+    .h-rule{
+      width:min(520px, 70%); margin: 0 auto 22px; height:6px;
+      background: linear-gradient(90deg,transparent,var(--gold),transparent);
+      border-radius:999px; position:relative; box-shadow:0 0 18px rgba(209,168,74,.25);
+    }
+    .h-rule::before,.h-rule::after{
+      content:""; position:absolute; top:50%; transform:translateY(-50%);
+      width:10px; height:10px; border-radius:50%;
+      background: radial-gradient(circle at 35% 35%, #fff8, #d5a84a 45%, #7a5a19 85%);
+      box-shadow:0 0 10px rgba(209,168,74,.5);
+    }
+    .h-rule::before{ left:-18px } .h-rule::after{ right:-18px }
+    h2{
+      font-family:"Cinzel",serif; font-weight:800; font-size:clamp(22px,3.2vw,32px);
+      color:var(--gold); margin:26px 0 10px; text-shadow:0 1px 0 #000;
+    }
+    p{ font-size:clamp(15px,2vw,18px); color:var(--text); margin:14px 0; text-align:justify }
+    .page p:first-of-type::first-letter{
+      font-family:"Cinzel",serif; font-weight:800; float:left; font-size:2.9em; line-height:.9;
+      padding: 8px 10px 0 2px; margin-right:8px; color:#ffcf66; text-shadow:0 2px 8px rgba(209,168,74,.35);
+    }
+    .panel{
+      background: linear-gradient(180deg,#0f0f0f,#0b0b0b);
+      border:1px solid #242424; border-radius:12px;
+      padding: clamp(14px, 2.5vw, 20px);
+      box-shadow: inset 0 0 40px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.45);
+    }
+    .hr-metal{
+      margin:26px 0; height:2px;
+      background: linear-gradient(90deg,transparent,#666,#bbb,#666,transparent);
+      border:none; box-shadow:0 0 8px rgba(255,255,255,.08);
+    }
+    .highlight{ color:#ffd27a; font-weight:600 }
+    .blood{ color:#ff4a4a; text-shadow:0 0 12px rgba(179,19,19,.35); font-weight:700 }
+    .center{ text-align:center } .m-top{ margin-top:18px } .small{ color:#bdbdbd; font-size:.95em }
+    img{ max-width:100%; height:auto; border-radius:12px; border:1px solid #2b2b2b; box-shadow:0 12px 28px rgba(0,0,0,.55) }
+    @media (hover:hover){ h1:hover{ text-shadow:0 2px 0 #000,0 0 14px rgba(209,168,74,.45),0 0 40px rgba(179,19,19,.35); transition:text-shadow .25s ease } }
+    @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
   </style>
 </head>
 <body>
-  <h1>Warhammer</h1>
-  <div class="box">
-    <p>
-      <span class="highlight">Warhammer</span> es un universo de fantasía y ciencia ficción creado por la empresa Games Workshop que ha marcado profundamente la cultura del hobby de miniaturas, los juegos de mesa y la narrativa épica oscura. Su nombre evoca la imagen de un martillo de guerra, símbolo de fuerza, devastación y dominio, y refleja perfectamente la esencia de sus mundos: lugares dominados por el conflicto constante, la desesperación y la lucha por la supervivencia. 
+  <div class="page">
+    <h1>Warhammer</h1>
+    <div class="h-rule"></div>
+
+    <div class="panel">
+      <p>
+        <span class="highlight">Warhammer</span> es un universo de fantasía y ciencia ficción creado por Games Workshop que ha dejado huella en el hobby de miniaturas, los juegos de mesa y la narrativa épica oscura. Su nombre remite al martillo de guerra, símbolo de fuerza y devastación, y refleja mundos dominados por el conflicto, la superstición y la lucha por la supervivencia.
+      </p>
+      <p>
+        En su vertiente de <span class="highlight">fantasía</span>, Warhammer Fantasy retrata un mundo sombrío inspirado en Europa medieval y renacentista, con dioses caóticos y razas en guerra —humanos, enanos, elfos, orcos y las hordas del Caos—. Aquí la victoria suele tener sabor a ceniza: la corrupción, las plagas y los cultos oscuros minan a los reinos incluso cuando logran resistir.
+      </p>
+      <p>
+        En <span class="highlight">Warhammer 40,000</span>, la acción salta al 41º milenio. La humanidad sobrevive en un Imperio teocrático y opresivo, sitiado por razas xenos, demonios y herejías. El lema “en el lejano futuro, solo hay guerra” resume un cosmos sin paz, donde los Marines Espaciales, la Guardia Imperial y otras facciones libran campañas interminables en nombre del Emperador, los Dioses Oscuros o su propia voluntad.
+      </p>
+      <p>
+        Más allá de las batallas, Warhammer es también una <span class="highlight">experiencia artística y narrativa</span>: modelismo, pintura, campañas enlazadas y una literatura que expande el trasfondo. Cada ejército cuenta una historia, cada mesa se convierte en un campo de batalla con cicatrices. Con décadas de evolución, el término “Warhammer” se ha convertido en sinónimo de épica oscura: un espejo exagerado de nuestras propias guerras, imperios, fanatismos y decadencias.
+      </p>
+    </div>
+
+    <hr class="hr-metal">
+
+    <p class="center m-top">
+      <a class="btn btn--gold" href="./index.html" style="display:inline-block;padding:10px 18px;border-radius:10px;border:1px solid #6c560f;background:linear-gradient(180deg,#caa44f,#8e6d27);color:#111;text-decoration:none;font-weight:700;letter-spacing:.3px;text-shadow:0 1px 0 #ffd">Volver al inicio</a>
     </p>
-    <p>
-      En su vertiente de <span class="highlight">fantasía</span>, Warhammer Fantasy presenta un mundo sombrío inspirado en la Europa medieval y renacentista, plagado de dioses oscuros, razas en eterna pugna —humanos, enanos, elfos, orcos y hordas del Caos— y un trasfondo en el que la guerra nunca cesa. Las historias no giran en torno a héroes invencibles, sino a sociedades al borde del colapso, donde incluso la victoria suele estar teñida de tragedia.
-    </p>
-    <p>
-      Por otro lado, <span class="highlight">Warhammer 40,000</span>, ambientado en un futuro lejano y distópico, nos transporta al 41º milenio, donde la humanidad sobrevive en un imperio galáctico opresivo y teocrático. El Imperio del Hombre, gobernado por el Dios Emperador, se enfrenta a amenazas alienígenas, demoníacas y heréticas en una guerra interminable. Su lema, “En el lejano futuro solo hay guerra”, encapsula la brutalidad de un cosmos en el que no existe lugar para la paz, la compasión ni la esperanza.
-    </p>
-    <p>
-      Warhammer no solo es un juego de miniaturas: es una <span class="highlight">experiencia narrativa</span>, un espacio donde los jugadores pintan ejércitos, crean historias y libran batallas épicas sobre mesas transformadas en campos de guerra. Su atractivo radica tanto en el modelismo y la estrategia como en la riqueza de su trasfondo literario, nutrido por novelas, cómics y videojuegos que expanden sus universos de forma casi infinita. Es un mundo que combina el arte con la estrategia militar y la imaginación desbordante, donde cada partida es también un relato en miniatura.
-    </p>
-    <p>
-      Con más de tres décadas de historia, Warhammer se ha convertido en un fenómeno cultural que mezcla lo gótico, lo bélico y lo mítico. Hablar de Warhammer es hablar de un espejo oscuro de nuestras propias sociedades: luchas de poder, religiones fanáticas, corrupción, grandeza y decadencia. Ya sea en los reinos de fantasía o en los astros del milenio 40, la palabra Warhammer significa entrar en un universo donde la guerra es eterna y la única certeza es el conflicto.
-    </p>
+
+    <p class="small m-top center">Tema oscuro con acentos dorados y rojos. Compatible móvil y accesible.</p>
   </div>
 </body>
 </html>
