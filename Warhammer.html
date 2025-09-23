@@ -2,118 +2,298 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Warhammer</title>
+  <title>Warhammer — Edición Animada</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=UnifrakturMaguntia&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- CSS integrado -->
   <style>
     :root{
-      --bg-carbon:#0b0b0b; --bg-iron:#141414; --bg-panel:#111;
+      --bg1:#0a0a0a; --bg2:#0e0e0e; --bg3:#121212;
       --text:#e6e6e6; --muted:#bdbdbd; --gold:#d1a84a; --red:#b31313; --edge:#2a2a2a;
-      --shadow:0 10px 30px rgba(0,0,0,.6);
+      --shadow:0 10px 30px rgba(0,0,0,.65);
+      --glow:0 0 18px rgba(209,168,74,.35);
+      --speed: 18s;
+      --rise: 28px;
     }
+
     *{box-sizing:border-box}
-    html,body{
-      height:100%;
-      background:
-        radial-gradient(1200px 600px at 20% 0%, #171717 0%, transparent 60%),
-        radial-gradient(1000px 500px at 100% 100%, #121212 0%, transparent 55%),
-        linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%);
-      background-color:var(--bg-carbon);
+    html,body{height:100%; margin:0}
+    body{
       color:var(--text);
       font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       line-height:1.65;
-      margin:0;
+      overflow-x:hidden;
+      background:
+        radial-gradient(1200px 600px at 20% 0%, #171717 0%, transparent 60%),
+        radial-gradient(1000px 500px at 100% 100%, #101010 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 60%, var(--bg3) 100%);
     }
+
+    /* ===== PARALLAX “NIEBLA/ESTELAS” ===== */
+    .parallax,
+    .parallax::before,
+    .parallax::after{
+      position:fixed; inset:0; pointer-events:none; z-index:-1;
+    }
+    .parallax::before{
+      content:"";
+      background:
+        radial-gradient(2px 2px at 20% 30%, #ffffff40, transparent 60%),
+        radial-gradient(1.5px 1.5px at 60% 70%, #ffffff30, transparent 60%),
+        radial-gradient(1.5px 1.5px at 80% 20%, #ffffff25, transparent 60%),
+        radial-gradient(1.2px 1.2px at 40% 80%, #ffffff25, transparent 60%);
+      animation: drift var(--speed) linear infinite;
+      opacity:.45;
+    }
+    .parallax::after{
+      content:"";
+      background:
+        radial-gradient(800px 300px at 10% -10%, #b313130f, transparent 70%),
+        radial-gradient(1200px 400px at 100% 110%, #d1a84a15, transparent 75%);
+      animation: drift2 calc(var(--speed) * 1.2) linear infinite;
+    }
+    @keyframes drift{
+      0%{transform:translateY(0)}
+      100%{transform:translateY(var(--rise))}
+    }
+    @keyframes drift2{
+      0%{transform:translateY(0)}
+      100%{transform:translateY(calc(var(--rise) * -1))}
+    }
+
+    /* ===== CONTENEDOR ===== */
     .page{
       max-width: 980px; margin: clamp(24px, 4vw, 48px) auto;
       padding: clamp(16px, 3vw, 32px);
       background: linear-gradient(145deg, rgba(255,255,255,.02), rgba(255,255,255,0)),
-                  linear-gradient(180deg, #0e0e0e, #0a0a0a);
+                  linear-gradient(180deg, #0f0f0f, #0a0a0a);
       border:1px solid var(--edge); border-radius:14px; box-shadow: var(--shadow);
       position:relative; overflow:hidden;
+      transform: translateY(16px); opacity:0;
+      transition: transform .8s ease, opacity .8s ease, box-shadow .25s ease;
     }
+    .page.reveal{ transform:translateY(0); opacity:1 }
+
     .page::before{
       content:""; position:absolute; inset:0; pointer-events:none; border-radius:14px;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), inset 0 0 60px rgba(209,168,74,.06);
     }
+
+    /* ===== TÍTULO: GLITCH + BRILLO DORADO ===== */
     h1{
       font-family: "UnifrakturMaguntia","Cinzel",serif;
-      font-size: clamp(40px, 6vw, 80px); letter-spacing:.5px; text-align:center;
-      margin: 6px 0 14px; color: #ffe08a;
+      font-size: clamp(42px, 7vw, 86px);
+      text-align:center; margin:0 0 14px;
+      color: #ffe08a;
+      letter-spacing:.5px;
+      background: linear-gradient(90deg, #775d1a 0%, #ffe08a 20%, #f8d36f 50%, #775d1a 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       text-shadow: 0 2px 0 #000, 0 6px 24px rgba(209,168,74,.35);
+      animation: sheen 4.5s ease-in-out infinite;
+      position:relative;
     }
+    @keyframes sheen{
+      0%,100%{filter: drop-shadow(0 0 0 rgba(209,168,74,0))}
+      50%{filter: drop-shadow(0 0 14px rgba(209,168,74,.35))}
+    }
+    /* glitch sutil */
+    h1::after{
+      content:attr(data-title);
+      position:absolute; left:0; right:0; top:0; text-align:center;
+      color:#ffd27a80; mix-blend-mode:screen; clip-path:inset(0 0 50% 0);
+      transform:translateX(0);
+      animation: glitch 2.4s infinite steps(2,end);
+    }
+    @keyframes glitch{
+      0%{transform:translateX(0)}
+      20%{transform:translateX(1px)}
+      21%{transform:translateX(-1px)}
+      22%{transform:translateX(0)}
+      60%{transform:translateX(0)}
+      61%{transform:translateX(1px)}
+      62%{transform:translateX(0)}
+      100%{transform:translateX(0)}
+    }
+
+    /* ===== SUBRAYADO CON DESTELLO EN BUCLE ===== */
     .h-rule{
       width:min(520px, 70%); margin: 0 auto 22px; height:6px;
       background: linear-gradient(90deg,transparent,var(--gold),transparent);
-      border-radius:999px; position:relative; box-shadow:0 0 18px rgba(209,168,74,.25);
+      border-radius:999px; position:relative; box-shadow:var(--glow);
+      overflow:hidden;
     }
-    .h-rule::before,.h-rule::after{
-      content:""; position:absolute; top:50%; transform:translateY(-50%);
-      width:10px; height:10px; border-radius:50%;
-      background: radial-gradient(circle at 35% 35%, #fff8, #d5a84a 45%, #7a5a19 85%);
-      box-shadow:0 0 10px rgba(209,168,74,.5);
+    .h-rule .flare{
+      position:absolute; top:-40%; width:120px; height:200%;
+      background: radial-gradient(closest-side, #fff, transparent 70%);
+      filter: blur(8px); opacity:.25;
+      left:-120px; animation: sweep 4.5s linear infinite;
     }
-    .h-rule::before{ left:-18px } .h-rule::after{ right:-18px }
+    @keyframes sweep{
+      0%{left:-120px; transform:rotate(8deg)}
+      100%{left:calc(100% + 120px); transform:rotate(8deg)}
+    }
+
+    /* ===== TIPOGRAFÍA Y PÁRRAFOS ===== */
     h2{
       font-family:"Cinzel",serif; font-weight:800; font-size:clamp(22px,3.2vw,32px);
       color:var(--gold); margin:26px 0 10px; text-shadow:0 1px 0 #000;
     }
-    p{ font-size:clamp(15px,2vw,18px); color:var(--text); margin:14px 0; text-align:justify }
-    .page p:first-of-type::first-letter{
+    p{ font-size:clamp(15px,2vw,18px); margin:14px 0; text-align:justify }
+    .highlight{ color:#ffd27a; font-weight:600 }
+    .blood{ color:#ff4a4a; text-shadow:0 0 12px rgba(179,19,19,.35); font-weight:700 }
+
+    /* Primera letra capitular animada ligeramente en la entrada */
+    .panel p:first-of-type::first-letter{
       font-family:"Cinzel",serif; font-weight:800; float:left; font-size:2.9em; line-height:.9;
-      padding: 8px 10px 0 2px; margin-right:8px; color:#ffcf66; text-shadow:0 2px 8px rgba(209,168,74,.35);
+      padding: 8px 10px 0 2px; margin-right: 8px; color:#ffcf66;
+      text-shadow: 0 2px 8px rgba(209,168,74,.35);
+      transform: translateY(10px); opacity:0;
+      animation: dropin .9s .2s ease forwards;
     }
+    @keyframes dropin{
+      to{transform:translateY(0); opacity:1}
+    }
+
+    /* ===== PANEL ===== */
     .panel{
       background: linear-gradient(180deg,#0f0f0f,#0b0b0b);
       border:1px solid #242424; border-radius:12px;
       padding: clamp(14px, 2.5vw, 20px);
       box-shadow: inset 0 0 40px rgba(0,0,0,.35), 0 8px 24px rgba(0,0,0,.45);
+      transform: translateY(12px); opacity:0;
+      transition: transform .7s ease, opacity .7s ease, box-shadow .25s ease;
     }
+    .panel.reveal{ transform:translateY(0); opacity:1 }
+
+    /* ===== SEPARADOR METÁLICO ===== */
     .hr-metal{
-      margin:26px 0; height:2px;
-      background: linear-gradient(90deg,transparent,#666,#bbb,#666,transparent);
-      border:none; box-shadow:0 0 8px rgba(255,255,255,.08);
+      margin: 26px 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #666, #bbb, #666, transparent);
+      border:none; box-shadow: 0 0 8px rgba(255,255,255,.08);
+      position:relative; overflow:hidden;
     }
-    .highlight{ color:#ffd27a; font-weight:600 }
-    .blood{ color:#ff4a4a; text-shadow:0 0 12px rgba(179,19,19,.35); font-weight:700 }
-    .center{ text-align:center } .m-top{ margin-top:18px } .small{ color:#bdbdbd; font-size:.95em }
-    img{ max-width:100%; height:auto; border-radius:12px; border:1px solid #2b2b2b; box-shadow:0 12px 28px rgba(0,0,0,.55) }
-    @media (hover:hover){ h1:hover{ text-shadow:0 2px 0 #000,0 0 14px rgba(209,168,74,.45),0 0 40px rgba(179,19,19,.35); transition:text-shadow .25s ease } }
-    @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
+    .hr-metal::after{
+      content:""; position:absolute; left:-20%; top:-250%;
+      width:40%; height:500%;
+      background: conic-gradient(from 0deg, transparent 0 30%, #ffffff22 40% 60%, transparent 70% 100%);
+      animation: spin 8s linear infinite;
+    }
+    @keyframes spin{
+      to{ transform: rotate(360deg) }
+    }
+
+    /* ===== BOTONES ===== */
+    .actions{ text-align:center; margin-top: 18px }
+    .btn{
+      display:inline-block; margin:6px;
+      padding: 10px 18px; border-radius:10px; border:1px solid #3a3a3a;
+      background: linear-gradient(180deg, #1c1c1c, #151515);
+      color:#eee; text-decoration:none; font-weight:700; letter-spacing:.3px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.03);
+      transition: transform .08s ease, box-shadow .2s ease, color .2s ease, filter .2s ease;
+      position:relative; overflow:hidden;
+    }
+    .btn:hover{
+      color:#fff3cf;
+      box-shadow: 0 6px 20px rgba(209,168,74,.25), inset 0 0 0 1px rgba(255,255,255,.06);
+      transform: translateY(-1px);
+      filter: drop-shadow(0 0 10px rgba(209,168,74,.25));
+    }
+    .btn--gold{
+      border-color:#6c560f;
+      background: linear-gradient(180deg, #caa44f, #8e6d27);
+      color:#111; text-shadow: 0 1px 0 #ffd;
+    }
+    .btn--danger{
+      border-color:#5b1414;
+      background: linear-gradient(180deg, #b31313, #6f0e0e);
+    }
+
+    /* ===== CHISPAS (SPARKS) SUAVES ===== */
+    .spark{
+      position:absolute; width:3px; height:3px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #ffd, #ffa50090 40%, transparent 70%);
+      pointer-events:none; opacity:0; transform:translate(-50%,-50%) scale(.8);
+      animation: spark .9s ease-out forwards;
+      filter: blur(.2px);
+    }
+    @keyframes spark{
+      0%{opacity:.0; transform:translate(-50%,-50%) scale(.4)}
+      15%{opacity:.9}
+      100%{opacity:0; transform:translate(-50%,-110%) scale(1.6)}
+    }
+
+    /* ===== ACCESIBILIDAD ===== */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important}
+      .parallax,.parallax::before,.parallax::after{display:none}
+    }
   </style>
 </head>
 <body>
-  <div class="page">
-    <h1>Warhammer</h1>
-    <div class="h-rule"></div>
+  <div class="parallax" aria-hidden="true"></div>
 
-    <div class="panel">
-      <p>
-        <span class="highlight">Warhammer</span> es un universo de fantasía y ciencia ficción creado por Games Workshop que ha dejado huella en el hobby de miniaturas, los juegos de mesa y la narrativa épica oscura. Su nombre remite al martillo de guerra, símbolo de fuerza y devastación, y refleja mundos dominados por el conflicto, la superstición y la lucha por la supervivencia.
-      </p>
-      <p>
-        En su vertiente de <span class="highlight">fantasía</span>, Warhammer Fantasy retrata un mundo sombrío inspirado en Europa medieval y renacentista, con dioses caóticos y razas en guerra —humanos, enanos, elfos, orcos y las hordas del Caos—. Aquí la victoria suele tener sabor a ceniza: la corrupción, las plagas y los cultos oscuros minan a los reinos incluso cuando logran resistir.
-      </p>
-      <p>
-        En <span class="highlight">Warhammer 40,000</span>, la acción salta al 41º milenio. La humanidad sobrevive en un Imperio teocrático y opresivo, sitiado por razas xenos, demonios y herejías. El lema “en el lejano futuro, solo hay guerra” resume un cosmos sin paz, donde los Marines Espaciales, la Guardia Imperial y otras facciones libran campañas interminables en nombre del Emperador, los Dioses Oscuros o su propia voluntad.
-      </p>
-      <p>
-        Más allá de las batallas, Warhammer es también una <span class="highlight">experiencia artística y narrativa</span>: modelismo, pintura, campañas enlazadas y una literatura que expande el trasfondo. Cada ejército cuenta una historia, cada mesa se convierte en un campo de batalla con cicatrices. Con décadas de evolución, el término “Warhammer” se ha convertido en sinónimo de épica oscura: un espejo exagerado de nuestras propias guerras, imperios, fanatismos y decadencias.
-      </p>
+  <main class="page" id="page">
+    <h1 data-title="Warhammer">Warhammer</h1>
+    <div class="h-rule"><span class="flare" aria-hidden="true"></span></div>
+
+    <section class="panel" id="intro">
+      <p><span class="highlight">Warhammer</span> es un universo de fantasía y ciencia ficción creado por Games Workshop que ha dejado huella en el hobby de miniaturas, los juegos de mesa y la narrativa épica oscura. Su nombre remite al martillo de guerra, símbolo de fuerza y devastación, y refleja mundos dominados por el conflicto, la superstición y la lucha por la supervivencia.</p>
+      <p>En su vertiente de <span class="highlight">fantasía</span>, Warhammer Fantasy retrata un mundo sombrío inspirado en Europa medieval y renacentista, con dioses caóticos y razas en guerra —humanos, enanos, elfos, orcos y las hordas del Caos—. Aquí la victoria suele tener sabor a ceniza: la corrupción, las plagas y los cultos oscuros minan a los reinos incluso cuando logran resistir.</p>
+      <p>En <span class="highlight">Warhammer 40,000</span>, la acción salta al 41º milenio. La humanidad sobrevive en un Imperio teocrático y opresivo, sitiado por razas xenos, demonios y herejías. El lema “en el lejano futuro, solo hay guerra” resume un cosmos sin paz, donde los Marines Espaciales, la Guardia Imperial y otras facciones libran campañas interminables en nombre del Emperador, los Dioses Oscuros o su propia voluntad.</p>
+      <p>Más allá de las batallas, Warhammer es también una <span class="highlight">experiencia artística y narrativa</span>: modelismo, pintura, campañas enlazadas y una literatura que expande el trasfondo. Cada ejército cuenta una historia, cada mesa se convierte en un campo de batalla con cicatrices. Con décadas de evolución, el término “Warhammer” se ha convertido en sinónimo de épica oscura: un espejo exagerado de nuestras propias guerras, imperios, fanatismos y decadencias.</p>
+    </section>
+
+    <hr class="hr-metal" />
+
+    <div class="actions">
+      <a class="btn btn--gold" href="./index.html">Volver al inicio</a>
+      <a class="btn btn--danger" href="https://www.warhammer.com/" target="_blank" rel="noopener">Sitio oficial</a>
     </div>
 
-    <hr class="hr-metal">
-
-    <p class="center m-top">
-      <a class="btn btn--gold" href="./index.html" style="display:inline-block;padding:10px 18px;border-radius:10px;border:1px solid #6c560f;background:linear-gradient(180deg,#caa44f,#8e6d27);color:#111;text-decoration:none;font-weight:700;letter-spacing:.3px;text-shadow:0 1px 0 #ffd">Volver al inicio</a>
+    <p class="actions" style="margin-top:8px">
+      <span class="muted" style="color:#bdbdbd">Pasa el mouse por los botones para ver brillos; desplázate y verás entradas con efecto.</span>
     </p>
+  </main>
 
-    <p class="small m-top center">Tema oscuro con acentos dorados y rojos. Compatible móvil y accesible.</p>
-  </div>
+  <script>
+    // ===== Scroll reveal: muestra contenedor y panel con suavidad =====
+    (function(){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); }
+        });
+      }, {threshold:.12});
+
+      document.querySelectorAll('.page, .panel').forEach(function(el){ io.observe(el); });
+    })();
+
+    // ===== Chispas al hacer click (toque “forja”) =====
+    (function(){
+      var page = document.getElementById('page');
+      var allow = true;
+      page.addEventListener('click', function(e){
+        // pequeños “sparks” limitados para no saturar
+        if(!allow) return;
+        allow = false; setTimeout(function(){ allow = true; }, 120); // throttle
+
+        for(var i=0;i<3;i++){
+          var s = document.createElement('span');
+          s.className = 'spark';
+          var dx = (Math.random()*24 - 12);
+          var dy = (Math.random()*8 - 4);
+          s.style.left = (e.clientX + dx) + 'px';
+          s.style.top  = (e.clientY + dy) + 'px';
+          document.body.appendChild(s);
+          (function(el){ setTimeout(function(){ el.remove(); }, 900); })(s);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
