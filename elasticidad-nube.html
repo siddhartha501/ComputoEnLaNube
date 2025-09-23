@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Elasticidad en la Nube — Resumen claro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0f172a;         /* azul profundo */
+      --bg-2:#111a33;
+      --card:#0b1227;        /* cartas */
+      --text:#e6f0ff;        /* texto principal */
+      --muted:#b9c6e4;       /* texto secundario */
+      --accent:#22d3ee;      /* cian */
+      --accent-2:#34d399;    /* verde */
+      --radius: 16px;
+      --shadow: 0 16px 40px rgba(0,0,0,.45);
+    }
+
+    /* Reset mínimo */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, #152347 0%, transparent 65%),
+        radial-gradient(1200px 600px at 100% 110%, #0b1635 0%, transparent 70%),
+        linear-gradient(180deg, var(--bg-2), var(--bg));
+      line-height:1.7;
+    }
+
+    /* Encabezado */
+    header{
+      position: sticky; top:0; z-index:10;
+      background: linear-gradient(180deg, rgba(15,23,42,.92), rgba(15,23,42,.75));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .wrap{max-width:1040px;margin:0 auto;padding:18px 16px}
+    h1{
+      margin:0;
+      font-size: clamp(26px, 4.8vw, 44px);
+      font-weight: 800;
+      letter-spacing:.2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 2px 0 #000, 0 10px 30px rgba(34,211,238,.25);
+    }
+    .subtitle{margin-top:4px;color:var(--muted);font-size: .98rem}
+
+    /* Contenido */
+    main{max-width:1040px;margin:24px auto;padding:0 16px}
+    .card{
+      background: linear-gradient(180deg, #0b1229, #0a1329);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(16px, 3vw, 26px);
+      margin: 18px 0;
+      animation: slideIn .5s ease both;
+    }
+    @keyframes slideIn{ from{opacity:0; transform: translateY(10px)} to{opacity:1; transform:none} }
+
+    h2{
+      margin:0 0 8px;
+      font-size: clamp(20px, 3vw, 26px);
+      color:#e8f6ff;
+    }
+    p{margin:8px 0; text-align: justify}
+    ul{margin:8px 0 0 0; padding-left: 20px}
+    li{margin:6px 0}
+
+    /* Imagen (limitada y centrada) */
+    .hero{
+      width: min(92vw, 880px);     /* límite duro: 880px */
+      margin: 22px auto 10px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.08);
+      background:#0b132b;
+    }
+    .hero img{
+      display:block;
+      width:100%;
+      height:auto;                 /* mantiene proporción */
+      aspect-ratio: 16/10;         /* reserva espacio; evita “saltos” */
+      object-fit: cover;
+    }
+    .hero figcaption{
+      padding:10px 14px;
+      font-size:.9rem;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    /* Footer */
+    footer{padding:26px 16px; text-align:center; color:var(--muted)}
+    .firma{margin-top:8px; font-weight:700; color:var(--accent-2)}
+
+    /* Preferencia de usuario */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none!important; transition:none!important}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <h1>Elasticidad en la Nube</h1>
+      <div class="subtitle">Escala de recursos automática para equilibrar <b>costo</b>, <b>rendimiento</b> y <b>disponibilidad</b>.</div>
+    </div>
+  </header>
+
+  <!-- IMAGEN CONTROLADA -->
+  <figure class="hero">
+    <!-- Reemplaza el src si usas otra imagen; el límite de ancho ya está aplicado -->
+    <img
+      src="servidor.png"
+      alt="Nube con servidores representando autoescalado"
+      width="880" height="550"
+      loading="lazy" decoding="async">
+    <figcaption>Ilustración: nube con servidores. La imagen está limitada a un máximo de 880 px de ancho y es responsiva.</figcaption>
+  </figure>
+
+  <main>
+    <section class="card">
+      <h2>1) ¿Qué es y por qué importa?</h2>
+      <p>
+        La <b>elasticidad</b> es la capacidad de una plataforma en la nube para <b>aumentar o reducir</b> recursos —cómputo, memoria, almacenamiento, red— de forma <b>automática</b> según la demanda. Cuando hay picos, el sistema “se estira” con nuevas instancias; cuando baja la carga, “se contrae” y libera recursos. Resultado: <b>experiencia estable</b> y <b>costos controlados</b>.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>2) Ejemplo rápido</h2>
+      <p>
+        Una app de streaming pasa de miles a millones de usuarios al estrenar un capítulo. La nube elástica agrega servidores, balancea el tráfico y, al terminar el pico, reduce el tamaño del clúster para no pagar por capacidad ociosa.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>3) Beneficios y retos</h2>
+      <ul>
+        <li><b>Costos:</b> pagas lo que usas, sin sobreaprovisionamiento.</li>
+        <li><b>Rendimiento:</b> absorbe picos sin degradación.</li>
+        <li><b>Disponibilidad:</b> soporte continuo ante variaciones.</li>
+        <li><b>Retos:</b> elegir umbrales buenos, evitar “bombeo” (cooldown), vigilar presupuesto.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>4) Dónde se aplica</h2>
+      <ul>
+        <li><b>IaaS:</b> autoescalado de VMs, discos y balanceadores.</li>
+        <li><b>PaaS:</b> réplicas de app por CPU/latencia/colas.</li>
+        <li><b>SaaS:</b> elasticidad transparente para el usuario final.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    Página de estudio — Elasticidad en la Nube.<br>
+    <span class="firma">Autor: SIDDHARTHA RAFAEL RAMIREZ CAMPOS</span>
+  </footer>
+</body>
+</html>
